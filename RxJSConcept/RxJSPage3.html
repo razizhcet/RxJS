@@ -1,0 +1,25 @@
+﻿<!DOCTYPE html>
+<html>
+<head>
+    <title>Three click 500ms</title>
+    <script src="https://unpkg.com/@reactivex/rxjs@5.5.7/dist/global/Rx.js"></script>
+</head>
+<body>
+
+    <button>Show</button>
+    <output></output>
+</body>
+</html>
+<script>
+    const output = document.querySelector('output');
+    const button = document.querySelector('button');
+
+    const click$ = Rx.Observable.fromEvent(button, 'click');
+
+    click$
+    .bufferWhen(() => click$.delay(500))
+    .filter(events => events.length >= 3)
+    .subscribe((res) => {
+        output.textContent = Math.random().toString(36).slice(2);
+    });
+</script>

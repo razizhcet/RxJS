@@ -1,0 +1,22 @@
+﻿<!DOCTYPE html>
+<html>
+<head>
+    <title>Third click event</title>
+    <script src="https://unpkg.com/@reactivex/rxjs@5.5.7/dist/global/Rx.js"></script>
+</head>
+<body>
+
+    <button>Show</button>
+    <output></output>
+</body>
+</html>
+<script>
+        const button = document.querySelector('button');
+        const output = document.querySelector('output');
+
+    Rx.Observable.fromEvent(button, 'click')
+        .bufferCount(3) // <--------- 3rd click event
+        .subscribe(() => {
+            output.textContent = Math.random().toString(36).slice(2);
+        });
+</script>

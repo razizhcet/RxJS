@@ -1,0 +1,20 @@
+﻿<!DOCTYPE html>
+<html>
+<head>
+    <title>Click for coordinate</title>
+    <script src="https://unpkg.com/@reactivex/rxjs@5.5.7/dist/global/Rx.js"></script>
+</head>
+<body>
+    <button>Click me</button>
+</body>
+</html>
+<script>
+    var button = document.querySelector('button');
+    //button.addEventListener('click', (event) => { console.log(event)});
+    Rx.Observable.fromEvent(button, 'click')
+        .throttleTime(1000)
+        .map((data)=>{return data.clientY})
+    .subscribe(
+    (coordinate) =>console.log(coordinate)
+    );
+</script>

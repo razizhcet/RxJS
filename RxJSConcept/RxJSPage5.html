@@ -1,0 +1,41 @@
+﻿<!DOCTYPE html>
+<html>
+<head>
+    <title>Random click</title>
+    <script src="https://unpkg.com/@reactivex/rxjs@5.5.7/dist/global/Rx.js"></script>
+</head>
+<body>
+    <button>Show posts</button>
+    <output></output>
+</body>
+</html>
+<script>
+    const button = document.querySelector("button");
+    const output = document.querySelector("output");
+
+    Rx.Observable
+      .fromEvent(button, "click")
+      .switchMap(getAlbums)
+      .subscribe(render, err => console.error(err));
+
+    function getAlbums() {
+        const userId = Math.round(Math.random() * 10);
+        return Rx.Observable.ajax(
+          `https://jsonplaceholder.typicode.com/albums?userId=${userId}`
+        );
+    }
+
+    function render(res) {
+        output.innerHTML = "";
+        for (const post of res.response) {
+            const article = document.createElement("article");
+            const h1 = document.createElement("h1");
+            const p = document.createElement("p");
+            h1.textContent = post.title;
+            p.textContent = `id:${post.id} userId: ${post.userId}`;
+            article.appendChild(h1);
+            article.appendChild(p);
+            output.appendChild(article);
+        }
+    }
+</script>
